@@ -32,10 +32,11 @@ Following visualisation produced by (more info in CLI Usage):
 ```
 dotnet run -- --function rastrigin --iteration 100 --verbosity --plot --num-plots 15 --history
 ```
+<image src="assets/swarm.gif">
 
-<video controls="" width="800" height="500" muted="" loop="true" autoplay="true">
+<!-- <video controls="" width="800" height="500" muted="" loop="true" autoplay="true">
 <source src="assets/rastrigin_pso.gif.mp4" type="video/mp4">
-</video>
+</video> -->
 
 ## CLI Usage
 
