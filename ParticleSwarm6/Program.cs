@@ -114,6 +114,8 @@ namespace ParticleSwarm
             // Initialize the function
             Console.WriteLine("Initializing " + function + " function");
             Func<double[], double> optimizationFunction;
+            XPlot.Plotly.PlotlyChart chart;
+
 
             if (function == "rastrigin")
             {
@@ -137,8 +139,8 @@ namespace ParticleSwarm
 
             // Plot input function 
             if (plot == true){
-                var function_trace = Optimizer.ImplicitPlot(Optimizer.Rastrigin3D, 30, 1);
-                var chart = PlotTraces(new List<Trace> {function_trace},
+                var function_trace = Optimizer.ImplicitPlot(optimizationFunction, 30, 1);
+                chart = PlotTraces(new List<Trace> {function_trace},
                                                 "Input function: " + function); 
                 chart.Show();
             }
@@ -146,11 +148,15 @@ namespace ParticleSwarm
             // Optimalization Process
             Console.WriteLine("Optimization start...");
             for (int i = 0; i < iteration; i++){
+
                 swarm.UpdateValue(optimizationFunction);
                 swarm.UpdateBest();
                 swarm.UpdateVelocity(0.5, 0.01, 0.03, random);
                 swarm.UpdatePosition();
-                swarm.UpdateHistory();
+
+                if (history == true){
+                    swarm.UpdateHistory();
+                }
 
                 if (verbosity == true){
                     Console.WriteLine("Iteration: " + i);
@@ -160,11 +166,14 @@ namespace ParticleSwarm
 
                 if (plot == true){
                     if (i % plotIteration == 0){
-                        var function_trace = Optimizer.ImplicitPlot(Optimizer.Rastrigin3D, 30, 0.1);
+                        var function_trace = Optimizer.ImplicitPlot(optimizationFunction, 30, 0.1);
                         var swarm_trace = Optimizer.SwarmPlot(swarm);
-                        var swarm_position_history_trace = Optimizer.SwarmPositionHistoryPlot(swarm);
-                        var chart = PlotTraces(new List<Trace> {function_trace, swarm_trace, swarm_position_history_trace},
-                                                "Iteration: " + i + " Best value: " + swarm.bestValue); 
+                        if (history == true){
+                            var swarm_position_history_trace = Optimizer.SwarmPositionHistoryPlot(swarm);
+                            chart = PlotTraces(new List<Trace> {function_trace, swarm_trace, swarm_position_history_trace}, "Iteration: " + i + " Best value: " + swarm.bestValue); 
+                        }else{
+                            chart = PlotTraces(new List<Trace> {function_trace, swarm_trace},"Iteration: " + i + " Best value: " + swarm.bestValue); 
+                        }
                         chart.Show();
                     }
                 }

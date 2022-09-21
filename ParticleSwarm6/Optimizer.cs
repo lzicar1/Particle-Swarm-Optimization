@@ -19,8 +19,8 @@ namespace ParticleSwarm
             Parabolla function in 3D
             */
 
-            double x = xy[0];
-            double y = xy[1];
+            double x = xy[0] - 30;
+            double y = xy[1] - 30;
             double scaling = 3;
             return (x*x + y*y) * scaling;
         }
@@ -40,9 +40,9 @@ namespace ParticleSwarm
             Saddle function in 3D
             */
 
-            double x = xy[0];
-            double y = xy[1];
-            return - x*x + y*y;
+            double x = xy[0] - 30;
+            double y = xy[1] - 30;
+            return 0.3* Math.Pow(x, 2) - 0.3*Math.Pow(y, 2); 
         }
 
         public static double[,] NormalizeArray(double[,] array){
@@ -99,7 +99,7 @@ namespace ParticleSwarm
             {
                 for (int j = 0; j < count*2; j++)
                 {
-                    z[i, j] = function(new double[] { i, j });
+                    z[j, i] = function(new double[] { i, j });
                 }
             }
 
